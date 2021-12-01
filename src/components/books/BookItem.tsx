@@ -7,8 +7,18 @@ import Typography from '@mui/material/Typography';
 import { TBook } from '../../model/Book';
 import { Box } from '@mui/system';
 import { ShoppingCart } from '@mui/icons-material';
+import { useRecoilState } from 'recoil';
+import { ShoppingCartAtom } from '../../state/ShoppingCartStore';
 
 export const BookItem = (props: Props) => {
+  const [shoppingCartState, setShoppingCartState] = useRecoilState(ShoppingCartAtom)
+
+  const handleAddClick = () => {
+    setShoppingCartState((currState) => {
+      return (currState.indexOf(props.isbn) === -1) ? [...currState, props.isbn] : [...currState]
+    })
+  }
+
   return (
     <Card>
       <CardMedia
@@ -24,7 +34,7 @@ export const BookItem = (props: Props) => {
             </Typography>
           </Box>
           <Box>
-            <Button size="small">
+            <Button size="small" onClick={handleAddClick}>
               <ShoppingCart color="primary"/> Ajouter au panier
             </Button>
           </Box>

@@ -1,11 +1,14 @@
-import { AppBar, Container, Grid, Toolbar, Typography } from "@mui/material"
+import { AppBar, Badge, Container, Grid, Toolbar, Typography } from "@mui/material"
 import { makeStyles } from "@mui/styles"
 import { Box } from "@mui/system"
 import { BookSharp, ShoppingCart } from "@mui/icons-material"
 import { Link } from "react-router-dom"
+import { ShoppingCartAtom } from "../../state/ShoppingCartStore"
+import { useRecoilValue } from "recoil"
 
 export const MainLayout: React.FC = (props) => {
     const classes = useStyles()
+    const shoppingCartState = useRecoilValue(ShoppingCartAtom)
 
     return (
         <>
@@ -37,11 +40,16 @@ export const MainLayout: React.FC = (props) => {
                                 </Grid>
                                 <Grid item>
                                         <Box display="flex" alignItems="center">
-                                            <ShoppingCart/>
                                             <Link to="/shopping-cart">
-                                                <Typography className="fw-700" color="primary">
-                                                    Mon panier
-                                                </Typography>
+                                                {
+                                                    shoppingCartState.length ? (
+                                                        <Badge badgeContent={shoppingCartState.length} color="primary">
+                                                            <ShoppingCart style={{ color: "black" }}/>
+                                                        </Badge>
+                                                    ) : (
+                                                        <ShoppingCart style={{ color: "black" }}/>
+                                                    )
+                                                }
                                             </Link>
                                         </Box>
                                 </Grid>
